@@ -1,9 +1,6 @@
 const mhsBimbinganController = {}
 const { MahasiswaBimbingan, Mahasiswa, Dosen } = require('../models')
-/*
-    this is auto generate example, you can continue 
 
-*/
 mhsBimbinganController.index = async (req, res) => {
     res.json({
         message: "Hello mhsBimbinganController"
@@ -27,7 +24,7 @@ mhsBimbinganController.create = async (req, res) => {
         })
 
         if (getMahasiswa === null || getDosen === null) {
-            throw Error('Data tidak ditemukan ! ')
+            throw Error('Data mahasiswa atau dosen tidak ditemukan ! ')
         } else {
 
             const createMhsBimbingan = await MahasiswaBimbingan.create({
@@ -46,37 +43,38 @@ mhsBimbinganController.create = async (req, res) => {
     }
 }
 
+// controllers/mhsbimbingancontroller.js
+
 mhsBimbinganController.getAll = async (req, res) => {
     try {
-        const getMhsBimbingan = await Mahasiswa.findAll({
+        const getDosenMembimbing = await Dosen.findAll({
             include: [
                 {
-                    model: Dosen
+                    model: Mahasiswa,
+                    as: 'Mahasiswas',
                 }
             ],
-        })
+        });
         return res.status(200).json({
-            data: getMhsBimbingan
-        })
+            data: getDosenMembimbing,
+        });
     } catch (error) {
-
-        console.log(error);
         return res.status(500).json({
-            message: error
-        })
+            message: error,
+        });
     }
 }
+
 
 mhsBimbinganController.getById = async (req, res) => {
     try {
         const { id } = req.params
-        const getMhsBimbingan = await Mahasiswa.findOne({
+        const getMhsBimbingan = await MahasiswaBimbingan.findOne({
             include: [
                 {
                     model: Dosen
                 }
             ],
-
             where: {
                 id: id
             }
@@ -85,7 +83,6 @@ mhsBimbinganController.getById = async (req, res) => {
             data: getMhsBimbingan
         })
     } catch (error) {
-
         return res.status(500).json({
             message: error
         })
@@ -110,10 +107,10 @@ mhsBimbinganController.update = async (req, res) => {
         })
 
         if (getMahasiswa === null || getDosen === null) {
-            throw Error('Data tidak ditemukan ! ')
+            throw Error('Data mahasiswa atau dosen tidak ditemukan ! ')
         } else {
 
-            const createMhsBimbingan = await MahasiswaBimbingan.update({
+            const updateMhsBimbingan = await MahasiswaBimbingan.update({
                 id_mahasiswa: id_mahasiswa,
                 id_dosen: id_dosen
             }, {
@@ -154,4 +151,3 @@ mhsBimbinganController.delete = async (req, res) => {
 }
 
 module.exports = mhsBimbinganController
-
