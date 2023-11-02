@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-controller" : "node ./scripts/generateController.js"
+    "generate-controller": "node ./scripts/generateController.js"
   },
   "keywords": [],
   "author": "Muhammad Irhas Albais",
